@@ -5,6 +5,7 @@ import stormImg from '../assets/images/storm.jpg';
 import '../assets/css/weather-card.css';
 
 const WeatherCard = ({ temp, condition, description }) => {
+    
     const getColor = (t) => {
         return t < 0 ? "#0033cc" :
             t <= 10 ? "#3399ff" :
