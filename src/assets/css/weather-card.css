@@ -1,0 +1,60 @@
+.card {
+
+    width: 200px;
+    height: fit-content;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: center;
+    align-content: center;
+    border: 2px solid gray;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #ebebeb;
+    gap: 10px;
+}
+
+.image-box {
+
+    min-width: 97%;
+    min-height: 97%;
+}
+
+.image-box > img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.weather-des {
+
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 1px solid gray;
+    position: relative;
+}
+
+.weather-des > p {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.weather-status > h2 {
+
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.weather-status,
+    .weather-des {
+        padding: 10px;
+    }
+
+
+
