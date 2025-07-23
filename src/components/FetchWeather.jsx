@@ -9,8 +9,7 @@
         const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`
         );
-                console.log(response)
-
+        
         if (!response.ok) throw new Error("لم يتم العثور على المدينة");
 
         const data = await response.json();
