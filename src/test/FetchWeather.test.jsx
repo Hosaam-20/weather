@@ -1,4 +1,4 @@
-import FetchWeather from '../FetchWeather';
+import FetchWeather from '../components/FetchWeather';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('FetchWeather', () => {
@@ -6,7 +6,6 @@ describe('FetchWeather', () => {
     const mockApiKey = 'fake-api-key';
 
     beforeEach(() => {
-
         import.meta.env = { VITE_WEATHER_API_KEY: mockApiKey };
     });
 
@@ -16,39 +15,49 @@ describe('FetchWeather', () => {
 
     it('يرجع بيانات الطقس عند نجاح الاستدعاء', async () => {
         const mockResponse = {
-            weather: [{ main: 'Clear', description: 'سماء صافية' }],
-            main: { temp: 28 },
-    };
+        weather: [{ main: 'Clear', description: 'سماء صافية' }],
+        main: { temp: 28 },
+        };
 
-    vi.stubGlobal('fetch', vi.fn(() =>
+        vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
             ok: true,
             json: () => Promise.resolve(mockResponse),
         })
-    ));
+        ));
 
-    const result = await FetchWeather('Riyadh');
+        const result = await FetchWeather('Riyadh');
 
-    expect(fetch).toHaveBeenCalled();
-    expect(result.data).toEqual({
+        expect(fetch).toHaveBeenCalled();
+        expect(result.data).toEqual({
         status: 'Clear',
         description: 'سماء صافية',
         temp: 28,
-    });
-    expect(result.err).toBeNull();
+        });
+        expect(result.err).toBeNull();
     });
 
     it('يرجع خطأ عند فشل الاستدعاء (مثل مدينة غير موجودة)', async () => {
-    vi.stubGlobal('fetch', vi.fn(() =>
+        vi.stubGlobal('fetch', vi.fn(() =>
         Promise.resolve({
-        ok: false,
-        status: 404,
+            ok: false,
+            json: () => Promise.resolve({}) 
         })
-    ));
+        ));
 
-    const result = await FetchWeather('مدينة_وهمية');
+        const result = await FetchWeather('مدينة_وهمية');
 
-    expect(result.data).toBeNull();
-    expect(result.err).toBe('لم يتم العثور على المدينة');
+        expect(result.data).toBeNull();
+        expect(result.err).toBe('لم يتم العثور على المدينة');
+    });
+
+    it('يرجع خطأ عند حدوث مشكلة في الشبكة', async () => {
+        vi.stubGlobal('fetch', vi.fn(() =>
+        Promise.reject(new Error('Network error'))
+        ));
+
+        const result = await FetchWeather('any');
+        expect(result.data).toBeNull();
+        expect(result.err).toBe('Network error');
     });
 });
